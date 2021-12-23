@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class MemoryMemberRepositoryTest {
 
-    MemoryMemberRepository repository = new MemoryMemberRepository();
+    private MemoryMemberRepository repository = new MemoryMemberRepository();
 
     //하나의 테스트가 끝날 때마다 테스트한 것을 초기화 해준다.
     @AfterEach
