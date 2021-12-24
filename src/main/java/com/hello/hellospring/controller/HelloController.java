@@ -13,9 +13,6 @@ public class HelloController {
         return "hello";
     }
 
-    public void s(){
-
-    }
 
 
 }
