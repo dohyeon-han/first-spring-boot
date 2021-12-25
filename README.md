@@ -52,6 +52,10 @@ public class A {
 }
 ```
 
+### JPA
+- JPA(Java Persistence API)란 자바 ORM(Object-Relational Mapping) 기술에 대한 표준 명세로, JAVA에서 제공하는 API이다. 
+- JPA는 구현체가 아닌 인터페이스이며 이를 구현한 구현체로는 Hibernate, OpenJPA 등이 있다.
+- CRUD 같은 반복되는 코드의 양을 줄여 개발 생산성을 더욱 높일 수 있다.
 
-
-
+### Spring Data JPA
+- 인터페이스만을 사용하여 기본적인 CRUD를 사용할 수 있다.
