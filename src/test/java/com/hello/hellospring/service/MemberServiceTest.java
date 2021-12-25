@@ -6,26 +6,34 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Transactional
 class MemberServiceTest {
-
+    @Autowired
     MemberService memberService;
-    MemoryMemberRepository memoryMemberRepository;
 
-    @BeforeEach
-    public void beforeEach(){
-        this.memoryMemberRepository = new MemoryMemberRepository();
-        this.memberService = new MemberService(memoryMemberRepository);
-    }
+//    @Autowired
+//    MemoryMemberRepository memoryMemberRepository;
 
-    //하나의 테스트가 끝날 때마다 테스트한 것을 초기화 해준다.
-    @AfterEach
-    public void afterEach(){
-        memoryMemberRepository.clearStore();
-    }
+//    @BeforeEach
+//    public void beforeEach(){
+//        this.memoryMemberRepository = new MemoryMemberRepository();
+//        this.memberService = new MemberService(memoryMemberRepository);
+//    }
+//
+//    //하나의 테스트가 끝날 때마다 테스트한 것을 초기화 해준다.
+//    @AfterEach
+//    public void afterEach(){
+//        memoryMemberRepository.clearStore();
+//    }
 
     @Test
     void join() {
@@ -50,16 +58,8 @@ class MemberServiceTest {
         //when
         memberService.join(member1);
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
-        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+
         //then
-    }
-
-    @Test
-    void findMembers() {
-
-    }
-
-    @Test
-    void findOne() {
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
     }
 }
