@@ -116,3 +116,105 @@ private final DiscountPolicy rateDiscountPolicy;
 ```
 - @Qualifier("")로 빈 이름을 지정할 수 있다. @RequiredArgsConstructor에서는 제대로 작동하지 않는다.
 - @Primary로 우선순위를 정할 수도 있다.
+
+## Bean Life Cycle CallBack
+- 스프링 빈의 Life Cycle은 다음과 같다
+  - 스프링 컨테이너 생성
+  - 스프링 빈 생성
+  - 의존 관계 주입
+  - 초기화 콜백: 빈이 생성되고 빈의 의존 관계 주입이 완료된 후 호출
+  - 사용
+  - 소멸 전 콜백: 빈이 소멸되기 직전에 호출
+  - 스프링 종료
+- 스프링 빈은 객체를 생성하고, 의존관계 주입이 다 끝난 다음에야 필요한 데이터를 사용할 수 있는 준비가 완료된다.
+- 만약 이 직후에 수행해야하는 작업이 있을 수 있다.
+- 그때 사용하는 것이 스프링 생명 주기 콜백이다.
+- 콜백의 방법으로는 세 가지가 있다. 
+### 인터페이스 InitializingBean, DisposableBean
+```JAVA
+public class NetworkClient implements InitializingBean, DisposableBean{
+    private String url;
+    ..
+    ..
+    ..
+    @Override
+    public void afterPropertiesSet() {
+        connect();
+        call("초기화 연결 메시지");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("NetworkClient.close");
+        disconnect();
+    }
+}
+```
+- 스프링 전용 인터페이스로 스프링에 종속적이고 외부 라이브러리에 적용이 불가능하다.
+- 가장 권장하지 않는 방법이다.
+### 빈 등록 초기화, 소멸 메서드 지정
+```JAVA
+@Configuration
+static class LifeCycleConfig {
+   @Bean(initMethod = "init", destroyMethod = "close")
+   public NetworkClient networkClient() {
+       NetworkClient networkClient = new NetworkClient();
+       networkClient.setUrl("http://hello-spring.dev");
+       return networkClient;
+  }
+}
+```
+- 메소드 이름을 지정하고 해당 실행할 메소드(init,close)를 구현한다.
+- 메소드 이름은 자유롭게 지정할 수 있다.
+- 외부 라이브러리에도 적용할 수 있다.
+### @PostConstruct, @PreDestory
+```JAVA
+public class NetworkClient {
+    private String url;
+    ..
+    ..
+    ..
+    @PostConstruct
+    public void init() {
+        System.out.println("NetworkClient.init");
+        connect();
+        call("초기화 연결 메시지");
+    }
+
+    @PreDestroy
+    public void close() {
+        System.out.println("NetworkClient.close");
+        disconnect();
+    }
+}
+```
+- 가장 권장하고 있는 방법이다.
+- 자바 표준으로 스프링에 종속적이지 않다.
+- 외부 라이브러리에 적용하지 못한다.
+
+- 아직 정확히 언제 적용할 수 있는지는 잘 모르겠다...
+
+## 빈 스코프
+- 스프링 컨테이너는 기본적으로 싱글톤으로 빈을 관리한다.
+- 따라서 다른 클라이언트가 동일한 빈을 요청하면 동일한 빈이 사용된다.
+### 프로토타입 스코프
+- 프로토타입 스코프는 스프링 컨테이너가 프로토타입 빈의 생성과 의존 관계 주입까지만 관리한다.
+- 스프링 컨테이너에서 프로토타입 스코프를 조회하면 매번 새로운 인스턴스를 반환한다.
+### 문제점
+- 프로토타입 빈과 싱글톤 빈을 같이 사용하게 되면 문제가 발생한다.
+- 싱글톤 빈에 프로토타입 빈을 주입하면, 싱글톤 빈에 매번 새 프로토타입 인스턴스를 생성하여 주입하지 않고 한 번 주입된 상태로 바뀌지 않는다.
+### 해결방법
+- proxy로 감싸기
+```JAVA
+@Component @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class Proto {
+
+}
+```
+- ObjectProvider 사용
+```JAVA
+public class Single {
+    @Autowired
+    private ObjectProvider<Proto> prototypeBeanProvider;
+}
+```
