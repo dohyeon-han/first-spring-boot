@@ -1,17 +1,16 @@
 package com.inflearn.order.member;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+//@Component("service")
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
     //순수 자바 코드 사용 시 DIP 위반
     //private final MemberRepository memberRepository = new MemoryMemberRepository();
     private final MemberRepository memberRepository;
-
-    public MemberServiceImpl(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
     @Override
     public void join(Member member) {

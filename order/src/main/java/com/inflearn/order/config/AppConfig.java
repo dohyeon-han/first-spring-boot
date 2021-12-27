@@ -1,7 +1,5 @@
 package com.inflearn.order.config;
 
-import com.inflearn.order.discount.DiscountPolicy;
-import com.inflearn.order.discount.RateDiscountPolicy;
 import com.inflearn.order.member.MemberRepository;
 import com.inflearn.order.member.MemoryMemberRepository;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +26,8 @@ public class AppConfig {
     public MemberRepository memberRepository(){
         return new MemoryMemberRepository();
     }
-    @Bean
-    public DiscountPolicy discountPolicy(){
-        return new RateDiscountPolicy();
-    }
+//    @Bean
+//    public DiscountPolicy discountPolicy(){
+//        return new RateDiscountPolicy();
+//    }
 }

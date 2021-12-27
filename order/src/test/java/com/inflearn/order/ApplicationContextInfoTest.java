@@ -4,10 +4,10 @@ import com.inflearn.order.config.AppConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@SpringBootTest
+import java.util.Map;
+
 public class ApplicationContextInfoTest {
     AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
 
@@ -37,6 +37,15 @@ public class ApplicationContextInfoTest {
                 Object bean = ac.getBean(beanDefinitionName);
                 System.out.println("name = " + beanDefinitionName + "  object = " + bean);
             }
+        }
+    }
+    
+    @Test
+    @DisplayName("빈 조회")
+    void bean(){
+        Map<String, Object> beans = ac.getBeansOfType(Object.class);
+        for (String s : beans.keySet()) {
+            System.out.println(ac.getBean(s));
         }
     }
 }
