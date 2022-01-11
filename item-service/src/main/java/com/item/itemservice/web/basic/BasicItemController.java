@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -37,9 +38,24 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute Item item) {
-        repository.save(item);
-        return "basic/item";
+    public String save(Item item, RedirectAttributes redirectAttributes) {
+        Item savedItem = repository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
+    }
+
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model){
+        Item item = repository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item){
+        repository.update(itemId, item);
+        return "redirect:basic/items/{itemId}";
     }
 
     //controller 생성 직후 데이터가 들어가 있다. 테스트 시 미리 데이터 적용
