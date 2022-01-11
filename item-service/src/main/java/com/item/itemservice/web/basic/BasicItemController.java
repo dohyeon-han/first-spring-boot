@@ -49,13 +49,15 @@ public class BasicItemController {
     public String editForm(@PathVariable Long itemId, Model model){
         Item item = repository.findById(itemId);
         model.addAttribute("item", item);
-        return "basic/editForm";
+        return "/basic/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item){
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item,
+                       RedirectAttributes redirectAttributes){
         repository.update(itemId, item);
-        return "redirect:basic/items/{itemId}";
+        redirectAttributes.addAttribute("status",true);
+        return "redirect:/basic/items/{itemId}";
     }
 
     //controller 생성 직후 데이터가 들어가 있다. 테스트 시 미리 데이터 적용
