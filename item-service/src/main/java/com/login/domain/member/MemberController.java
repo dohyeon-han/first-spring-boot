@@ -1,6 +1,7 @@
 package com.login.domain.member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -24,7 +26,7 @@ public class MemberController {
 
     @PostMapping("/add")
     public String save(@Validated @ModelAttribute("member") Member member, BindingResult bindingResult) {
-
+        log.info("bindingResult ={}", bindingResult);
         if (bindingResult.hasErrors()) {
             return "member/addMemberForm";
         }
