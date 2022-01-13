@@ -2,13 +2,13 @@ package com.login.web;
 
 import com.login.domain.member.Member;
 import com.login.domain.member.MemberRepository;
+import com.login.web.argumentresolver.Login;
 import com.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +39,7 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String homeServletSessionLogin(@SessionAttribute(name = "loginMember", required = false)Member member, Model model){
+    public String homeServletSessionLogin(@Login Member member, Model model){
         if(member==null) return "index";
         model.addAttribute("member",member);
         return "home";
