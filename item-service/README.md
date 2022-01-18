@@ -89,3 +89,23 @@ public void doFilter(...){
 - return값이 true이면 resolveArgument()를 수행한다.
 - resolveArgument()는 Object타입의 값을 return하는데 그 값이 어노테이션의 인자값이 된다.
 
+## Spring Boot API 예외처리
+- 스프링 부트는 기본적으로 ExceptionResolver를 제공한다.
+### @ExceptionHandler
+- ExceptionHandler 중 가장 우선순위가 높은 handler이다.
+- ModelAndView 없이 간단하게 예외처리를 할 수 있다.
+- @ResponseStatus가 없으면 정상적인 응답으로 처리한다.
+```JAVA
+@ExceptionHandler(IllegalArgumentException.class)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public ErrorResult illegalExHandler(IllegalArgumentException e) {
+  log.error("[exceptionHandler] ex", e);
+  return new ErrorResult("BAD", e.getMessage());
+}
+```
+### @ControllerAdvice
+- Controller에 예외처리 코드를 넣는 것은 좋지 않다.
+- 따라서 예외처리 코드만을 따로 적용하는 파일을 만들 수 있는데 클래스에 @ControllerAdvice를 적용하면 된다.
+- 해당 어노테이션이 적용되는 컨트롤러를 지정할 수도 있다.
+- 아무것도 지정하지 않으면 모든 컨트롤러에 적용된다.
+
