@@ -114,3 +114,40 @@ EntityManger.persist(member);
 - 모든 DB에서 사용가능하지만, 성능이 떨어진다.
 #### AUTO
 - DB에 맞게 자동으로 전략을 지정하며 기본 값이다.
+## 연관관계 매핑 기초
+### 단방향 연관관계
+```java
+@Entity
+public class Member {
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String name;
+	private int age;
+	@ManyToOne
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
+}
+```
+- 엔티티에 참조할 객체의 클래스를 선언 후 매핑할 수 있다.
+```java
+Member findMember = em.find(Member.class, member.getId());
+Team findTeam = findMember.getTeam();
+```
+- 객체에서 외래키로 다시 찾을 필요 없이 바로 참조가 가능하다.
+### 양방향 연관관계
+```java
+@Entity
+public class Team {
+  @Id
+  @GeneratedValue
+  private Long id;
+  private String name;
+  @OneToMany(mappedBy = "team")
+  private List<Member> members = new ArrayList<>();
+}
+```
+- @ManyToOne, @OneToMany 등을 이용해 엔티티를 이어주면 양방향 연관관계가 되어 양쪽에서 참조가 가능하다.
+#### 연관관계 주인
+- 양방향 연관관계를 통해 서로 참조가 가능하지만 외래 키를 관리하는 주체가 필요하다.
+- 이때 외래 키를 갖는 쪽이 관계의 주인이 되어 외래 키를 관리할 수 있다.

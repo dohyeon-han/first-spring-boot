@@ -13,7 +13,7 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 10
 )
-@Entity(name = "jpa1_member")
+@Entity
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_GENERATOR")
