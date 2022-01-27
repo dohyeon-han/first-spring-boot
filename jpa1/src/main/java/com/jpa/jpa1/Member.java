@@ -7,13 +7,13 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
 @SequenceGenerator(
         name="SEQ_GENERATOR",
         sequenceName = "SEQ",
         initialValue = 1,
         allocationSize = 10
 )
+@Entity(name = "jpa1_member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_GENERATOR")
