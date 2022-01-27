@@ -18,10 +18,11 @@ public class Jpa1Application {
 
 		try {
 //			추가
-//			Member member = new Member();
-//			member.setId(1L);
-//			member.setName("helloA");
-//			em.persist(member);
+			Member member = new Member();
+			member.setName("helloA");
+			member.setRole(Role.GUEST);
+			member.setRoleTest(Role.GUEST);
+			em.persist(member);
 
 //			수정
 			Member find = em.find(Member.class, 1L);
