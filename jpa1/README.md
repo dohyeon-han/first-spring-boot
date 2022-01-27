@@ -125,7 +125,7 @@ public class Member {
 	private String name;
 	private int age;
 	@ManyToOne
-	@JoinColumn(name = "TEAM_ID")
+	@JoinColumn(name = "TEAM_ID")//fk 이름
 	private Team team;
 }
 ```
@@ -143,7 +143,7 @@ public class Team {
   @GeneratedValue
   private Long id;
   private String name;
-  @OneToMany(mappedBy = "team")
+  @OneToMany(mappedBy = "team")//반대편 엔티티의 필드값
   private List<Member> members = new ArrayList<>();
 }
 ```
