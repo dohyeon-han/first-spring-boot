@@ -16,7 +16,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private LocalDateTime orderDate;
@@ -26,4 +26,8 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItem = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
 }
