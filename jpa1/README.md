@@ -47,7 +47,7 @@ https://www.inflearn.com/course/ORM-JPA-Basic#curriculum
     Member member = memberDAO.find(id); //SELECT * FROM MEMBER
     Team team = member.getTema();
     String name = team.getName(); //SELECT * FROM TEAM
-    //미리 team을 조회하지 않고 실제 값이 필요할 때 조회한다.->엔티티 신뢰 문제 해소
+    //미리 team을 조회하지 않고 실제 값이 필요할 때 조회한다. → 엔티티 신뢰 문제 해소
     ```
 ### JPA 구동 방식
 ![image](https://user-images.githubusercontent.com/63232876/151149872-29771b4c-1ab7-4abd-89c7-2bd62edaf8cb.png)
@@ -114,7 +114,7 @@ EntityManger.persist(member);
 - 모든 DB에서 사용가능하지만, 성능이 떨어진다.
 #### AUTO
 - DB에 맞게 자동으로 전략을 지정하며 기본 값이다.
-## 연관관계 매핑 기초
+## 연관관계 매핑
 ### 단방향 연관관계
 ```java
 @Entity
@@ -151,3 +151,21 @@ public class Team {
 #### 연관관계 주인
 - 양방향 연관관계를 통해 서로 참조가 가능하지만 외래 키를 관리하는 주체가 필요하다.
 - 이때 외래 키를 갖는 쪽이 관계의 주인이 되어 외래 키를 관리할 수 있다.
+### 다양한 연관관계
+####
+#### @ManyToOne
+- 단방향 : many(주인) → one으로 참조 가능, 반대는 불가능
+- 양방향 : 서로 참조 가능
+#### @OneToMany
+- 단방향 : one(주인) → many로 참조 가능
+- 양방향 : 공식적으로 존재하는 매핑은 아니나 @JoinColumn(insertable=false, updatable=false)을 사용해 양방향처럼 사용 가능
+- one이 주인이지만 many쪽 테이블에 외래 키가 존재하는 구조이다.
+- update 쿼리가 한 번 더 사용되고, 사용하기에 헷갈리므로 다대일 양방향을 주로 사용한다.
+#### @OneToOne
+- 외래 키를 주 테이블에 둘 지, 대상 테이블에 둘 지 정해야 한다.
+- 주 테이블
+  - JPA로 매핑하기에 편리
+  - 추후에 대상 테이블과의 관계가 일대다로 변한다면, 테이블 구조 변경이 어려움
+- 대상 테이블
+  - 테이블 구조 변경이 용이
+  - 프록시 기능의 한계로 지연 로딩으로 설정해도 항상 즉시 로딩
