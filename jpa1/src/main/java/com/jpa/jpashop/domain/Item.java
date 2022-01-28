@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 public class Item {
     @Id
@@ -21,5 +22,4 @@ public class Item {
 
     @ManyToMany(mappedBy = "items")
     private List<Category> items = new ArrayList<>();
-
 }
