@@ -173,3 +173,18 @@ public class Team {
 - 2개의 테이블로는 다대다 관계를 표현 불가
 - 실무에선 거의 사용하지 않는다.
 - 연결 테이블을 이용해 @OneToMany, @ManyToOne을 사용한다.
+## 고급 매핑
+### 상속관계 매핑
+#### @Inheritance(strategy=InheritanceType.XXX)
+- JOINED
+  - 테이블 정규화가 가능하고 저장 공간의 효율성 증가한다.
+  - 조회 시 조인으로 인한 성능이 저하되고 insert 쿼리가 두 번 사용된다.
+- SINGLE_TABLE
+  - 조인을 하지 않아 빠르게 조회할 수 있다.
+  - null을 허용해야하므로 공간이 낭비되고 이로 인해 성능에 저하가 올 수 있다.
+- TABLE_PER_CLASS
+  - 쓰지 말자, 상속의 장점을 버린다.
+### Mapped Superclass
+- 테이블 공통의 매핑 정보를 상속한다.
+- 엔티티가 아니며 실제 테이블과도 매핑되지 않는다.
+- 해당 클래스로 조회가 불가능한다.
