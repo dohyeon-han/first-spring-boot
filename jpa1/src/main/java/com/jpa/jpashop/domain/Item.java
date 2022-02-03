@@ -8,6 +8,7 @@ import java.util.List;
 
 @Getter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
 @Entity
 public class Item {
     @Id

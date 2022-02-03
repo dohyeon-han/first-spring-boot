@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Entity(name = "shop_member")
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
