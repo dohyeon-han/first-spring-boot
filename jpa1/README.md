@@ -188,3 +188,39 @@ public class Team {
 - 테이블 공통의 매핑 정보를 상속한다.
 - 엔티티가 아니며 실제 테이블과도 매핑되지 않는다.
 - 해당 클래스로 조회가 불가능한다.
+## 프록시
+### 프록시 기초
+```java
+Member member1 = em.find(Member.class, "memberId"); // 실제 DB에서 조회
+        
+Member member2 = em.getReference(Member.class , "memberId"); // 프록시 객체 반환
+member2.getName(); //프록시 객체 초기화
+```
+- 프록시는 실제 클래스를 상속 받아서 만들어지므로 사용자 입장에서는 구분 없이 사용할 수 있다.
+#### 프록시 객체 초기화
+- member2.getName() 후, 실제 엔티티가 생성되어 있지 않으면 영속성 컨텍스트에 엔티티 생성 요청 -> 초기화
+- 엔티티 객체 생성 후 프록시 객체는 엔티티 객체를 참조하여 결과 반환
+#### 프록시 특징
+- 프록시 객체는 한 번만 초기화 되며 실제 엔티티가 되는 것은 아니다.
+- 프록시 객체는 엔티티 객체를 상속 받기 때문에 타입 체크 시 intance of 를 사용해야 한다.
+#### 프록시와 식별자
+- 프록시는 식별자(PK)를 보관하고, 식별자로 값을 조회한다.
+- 연관관계 설정 시 프록시를 활용하면 SQL을 사용하지 않고 설정할 수 있다.
+```java
+Member member em.find(Member.class, "member1");
+Team tema = em.getReference(Member.class , "team1"); // 쿼리문을 사용하지 않고 프록시 객체 생성
+member.setTeam(team);
+```
+### 즉시 로딩과 지연 로딩
+#### 즉시 로딩(fetch = FetchType.EAGER)
+- 엔티티 조회 시 연관된 엔티티까지 함께 조회한다.
+- 즉사 로딩은 항상 outer join을 사용한다. inner join을 사용하면 일대다 관계에서 다 쪽의 엔티티가  null이면 일 자체 엔티티도 null이 된다. 
+#### 지연 로딩(fetch = FetchType.LAZY)
+- 엔티티 조회 시 해당 엔티티만 조회하고, 연관된 엔티티에는 키를 이용한 프록시 객체를 만든다.
+- 연관된 엔티티 조회 시 SQL을 한 번 더 사용한다.
+#### 컬랙션 래퍼
+- 컬랙션에 지연 로딩을 사용하면 컬랙션 자체를 호출할 때는 초기화되지 않고 컬랙션 내의 실제 데이터를 조회할 때 초기화된다.
+#### JPA fetch 전략
+- JPA의 기본 설정은 연관된 엔티티가 하나면 즉시 로딩(ManyToOne, OneToOne), 컬랙션이면 지연 로딩(OneToMany, ManyToMany)을 사용한다.
+- 추천하는 방법은 모든 연관 관계에 지연 로딩을 사용하고 필요할 때 즉시 로딩으로 변경하는 것이다.
+

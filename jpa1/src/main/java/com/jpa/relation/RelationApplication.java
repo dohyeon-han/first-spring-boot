@@ -36,13 +36,18 @@ public class RelationApplication {
             em.clear();
 
             //조회
-            Member findMember = em.find(Member.class, member1.getId());
+            //Member findMember = em.find(Member.class, member1.getId());
+            Member findMember = em.getReference(Member.class, member1.getId());
+
             //멤버가 속한 팀을 다시 조회 -> 객체지향적X
             //Team findTeam = em.find(Team.class, findMember.getTeamId());
             //System.out.println("findTeam = " + findTeam.getName());
 
             //객체지향적
-            System.out.println("findTeam = " + findMember.getTeam().getName());
+            //System.out.println("findTeam = " + findMember.getTeam().getName());
+            System.out.println(findMember.getName());
+            System.out.println(findMember.getTeam().getName());
+            System.out.println(findMember.getTeam().getName());
 
             System.out.println(team.getMembers().size());
 

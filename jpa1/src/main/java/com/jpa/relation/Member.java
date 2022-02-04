@@ -13,7 +13,7 @@ public class Member {
     @GeneratedValue
     private Long id;
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="teamId")
     private Team team;
 
