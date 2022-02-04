@@ -206,11 +206,11 @@ member2.getName(); //프록시 객체 초기화
 #### 프록시와 식별자
 - 프록시는 식별자(PK)를 보관하고, 식별자로 값을 조회한다.
 - 연관관계 설정 시 프록시를 활용하면 SQL을 사용하지 않고 설정할 수 있다.
-```java
-Member member em.find(Member.class, "member1");
-Team tema = em.getReference(Member.class , "team1"); // 쿼리문을 사용하지 않고 프록시 객체 생성
-member.setTeam(team);
-```
+  ```java
+  Member member em.find(Member.class, "member1");
+  Team tema = em.getReference(Member.class , "team1"); // 쿼리문을 사용하지 않고 프록시 객체 생성
+  member.setTeam(team);
+  ```
 ### 즉시 로딩과 지연 로딩
 #### 즉시 로딩(fetch = FetchType.EAGER)
 - 엔티티 조회 시 연관된 엔티티까지 함께 조회한다.
@@ -223,4 +223,15 @@ member.setTeam(team);
 #### JPA fetch 전략
 - JPA의 기본 설정은 연관된 엔티티가 하나면 즉시 로딩(ManyToOne, OneToOne), 컬랙션이면 지연 로딩(OneToMany, ManyToMany)을 사용한다.
 - 추천하는 방법은 모든 연관 관계에 지연 로딩을 사용하고 필요할 때 즉시 로딩으로 변경하는 것이다.
-
+### 영속성 전이
+- 엔티티를 영속 상태로 만들 때 연관된 엔티티도 같이 영속 상태로 만들 수 있다.
+- 부모와 자식 간에 영속성 전이가 되지 않으면 무결성 예외가 발생한다.
+  ```java
+  @OneToMany(cascade = CascadeType.ALL)
+  ```
+### 고아 객체
+- 부모와 자식간의 연관관계가 끊어진 경우 고아 객체가 된다.
+- JPA는 자식 엔티티를 자동으로 삭제해 주는 기능이 있다.
+  ```java
+  @OneToMany(orphanRemoval = true)
+  ```
