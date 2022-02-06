@@ -1,5 +1,8 @@
 package com.jpa.jpashop;
 
+import com.jpa.jpashop.domain.Delivery;
+import com.jpa.jpashop.domain.Order;
+import com.jpa.jpashop.domain.OrderItem;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -20,7 +23,16 @@ public class JpaShopApplication {
 		tx.begin();
 
 		try {
+			Order order = new Order();
+			OrderItem orderItem1 = new OrderItem();
+			OrderItem orderItem2 = new OrderItem();
+			Delivery delivery = new Delivery();
 
+			order.setDelivery(delivery);
+			order.getOrderItems().add(orderItem1);
+			order.getOrderItems().add(orderItem2);
+
+			em.persist(order);
 			tx.commit();
 		}catch (Exception e){
 			tx.rollback();

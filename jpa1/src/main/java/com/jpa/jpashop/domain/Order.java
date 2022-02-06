@@ -1,5 +1,6 @@
 package com.jpa.jpashop.domain;
 
+import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @Entity
 @Table(name="ORDERS")
 public class Order extends BaseEntity{
@@ -15,7 +16,7 @@ public class Order extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -24,10 +25,10 @@ public class Order extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private OrderStatue status;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItem = new ArrayList<>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 }
