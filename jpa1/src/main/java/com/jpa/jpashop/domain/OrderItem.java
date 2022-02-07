@@ -1,14 +1,18 @@
 package com.jpa.jpashop.domain;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_item_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,4 +26,8 @@ public class OrderItem {
     private int orderPrice;
 
     private int count;
+
+    public void setOrder(Order order){
+        this.order = order;
+    }
 }

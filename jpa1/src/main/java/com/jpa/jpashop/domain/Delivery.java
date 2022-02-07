@@ -19,9 +19,6 @@ public class Delivery {
     @OneToOne(mappedBy = "delivery")
     private Order order;
 
-    @ManyToMany
-    private List<Category> categories = new ArrayList<>();
-
     private String city;
 
     private String street;

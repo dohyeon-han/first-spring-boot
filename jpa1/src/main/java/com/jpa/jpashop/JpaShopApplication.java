@@ -29,8 +29,8 @@ public class JpaShopApplication {
 			Delivery delivery = new Delivery();
 
 			order.setDelivery(delivery);
-			order.getOrderItems().add(orderItem1);
-			order.getOrderItems().add(orderItem2);
+			order.addOrderItems(orderItem1);
+			order.addOrderItems(orderItem2);
 
 			em.persist(order);
 			tx.commit();
