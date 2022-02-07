@@ -235,3 +235,36 @@ member2.getName(); //프록시 객체 초기화
   ```java
   @OneToMany(orphanRemoval = true)
   ```
+  
+## 값 타입
+### 임베디드 타입
+- 새로운 타입을 엔티티에 지정할 수 있다.
+  ```java
+  @Entity
+  public class Member{
+    @Id @GeneratedValue
+    privete Long id;
+    
+    @Embedded Address homeAddress;
+  }
+  // Address 타입
+  @Embeddable
+  public class Address{
+    private String city;
+    private String street;
+  }
+  ```
+- 임베디드 타입이 null이면 컬럼 값은 모두 null이다.
+### 불변 타입
+- setter를 허용하면 같은 임베디드 객체를 공유하여 한 쪽의 변경이 다른 쪽에 영항을 줄 수 있다.
+- setter는 허용하지 않는 것이 좋다.
+### 값 비교
+- 동일성 비교 : 객체의 메모리 주소가 같은 지 비교한다. == 사용
+- 동등성 비교 : 인스턴스의 값을 비교한다. equals() 사용
+### 값 타입 컬렉션
+- @ElementCollection로 값 타입 컬렉션을 선언하고 @CollectionTable로 컬럼을 매핑한다.
+- 값 타입 컬렉션을 가진 엔티티만 영속화 해도 해당 엔티티와 관계를 맺는 값 타입 엔티티도 같이 영속화 된다.
+#### 제한사항
+- 값 타입 컬렉션은 식별자가 없어 값의 변경이 일어나면 연관된 모든 데니터를 삭제하고 다시 하나하나 저장한다.
+- 따라서 연관된 테이블에 데이터가 많다면 값 타입 컬렉션 대신 일대다 관계가 유리하다.
+- 값 타입을 하나의 기본 키로 보기 때문에 중복된 데이터를 저장할 수 없다.
