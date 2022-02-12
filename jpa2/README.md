@@ -86,3 +86,25 @@ SELECT o.member.team
 - JPQL을 사용하도록 도와주는 빌더 클래서 API다.
 - JPQL보다 안전하게 동적 쿼리를 생성할 수 있지만 직관적으로 이해하기 힘들다.
 - 실무에서는 잘 안 쓰인다고 한다.
+
+## QueryDSL
+- 동적쿼리를 만들기 위해 JPQL을 사용하면 문자열로 처리를 해야하기 때문에 오류기 발생하기 쉽고, Criteria는 코드가 복잡하고 가독성이 떨어진다.
+- QueryDSL는 이러한 문제를 해결해준다.
+- Q타입을 이용해 쿼리문을 작성한다.
+  ```java
+  JPAQueryFactory query = new JPAQueryFactory(em);
+  QMember member = QMember.member;
+  List<Member> members = query.selectFrom(member)
+          .where(member.username.like("%user%"))
+          .fetch();
+  ```
+### 동적 쿼리
+- BooleanBuilder를 사용하여 특정 조건에 따라 동적 쿼리를 생성할 수 있다.
+  ```java
+  BooleanBuilder builder = new BooleanBuilder();
+        if(fetch2.size()!=0){
+            builder.and(member.age.goe(10));
+            if(fetch2.get(0).getUsername().contains("user"))
+                builder.and(member.username.like("%user%"));
+  }
+  ```

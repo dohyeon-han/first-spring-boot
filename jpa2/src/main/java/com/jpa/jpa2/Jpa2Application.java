@@ -2,21 +2,43 @@ package com.jpa.jpa2;
 
 import com.jpa.jpa2.entity.Member;
 import com.jpa.jpa2.entity.Team;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.*;
-import javax.persistence.criteria.*;
-import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceUnit;
 
-//@SpringBootApplication
+@Configuration
+@SpringBootApplication
 public class Jpa2Application {
-
     public static void main(String[] args) {
-//		SpringApplication.run(Jpa2Application.class, args);
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        SpringApplication.run(Jpa2Application.class, args);
+    }
+
+    @Bean
+    JPAQueryFactory jpaQueryFactory(EntityManager em) {
+        return new JPAQueryFactory(em);
+    }
+
+    @Autowired
+    QueryDsl queryDsl;
+
+    @PersistenceUnit
+    EntityManagerFactory emf;
+
+    @PostConstruct
+    public void init() {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-
         try {
             Member user1 = Member.builder().username("user1").age(20).build();
             Member user2 = Member.builder().username("user2").age(20).build();
@@ -38,44 +60,12 @@ public class Jpa2Application {
             em.persist(team1);
             em.persist(team2);
 
-            em.flush();
-            em.clear();
-
-            Query query = em.createQuery("SELECT new com.jpa.jpa2.MemberDto(m.username, m.age) FROM Member AS m " +
-                            "WHERE m.age = :age", MemberDto.class)
-                    .setParameter("age", 20);
-//            query.setFirstResult(10);
-//            query.setMaxResults(20);
-            List<MemberDto> members = query.getResultList();
-
-            for (MemberDto dto : members) {
-                System.out.println(dto.getUsername());
-                System.out.println(dto.getAge());
-            }
-
-            List<Member> resultList = em.createQuery("SELECT m FROM Member m JOIN FETCH m.team", Member.class)
-                    .getResultList();
-
-            for (Member m : resultList) {
-                System.out.println("username : " + m.getUsername());
-                System.out.println("team_name : " + m.getTeam().getTeamName() + "\n");
-            }
-
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Member> cq = cb.createQuery(Member.class);
-            Root<Member> from = cq.from(Member.class);
-            Predicate equal = cb.equal(from.get("username"), "user1");
-            Order age = cb.desc(from.get("age"));
-            cq.select(from).where(equal).orderBy(age);
-            List<Member> resultList1 = em.createQuery(cq).getResultList();
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
         } finally {
             em.close();
         }
-        emf.close();
+        queryDsl.queryDSL();
     }
-
 }
