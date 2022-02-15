@@ -1,13 +1,18 @@
-package com.jpa.jpa3.domain.subitem;
+package com.jpa.jpa3.domain.item;
 
-import com.jpa.jpa3.domain.Item;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Getter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorValue("B")
 public class Book extends Item {
     private String author;

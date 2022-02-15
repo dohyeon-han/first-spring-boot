@@ -1,5 +1,6 @@
 package com.jpa.jpa3.domain;
 
+import com.jpa.jpa3.domain.item.Item;
 import lombok.Getter;
 
 import javax.persistence.*;
