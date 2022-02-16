@@ -3,6 +3,7 @@ package com.jpa.jpa3.domain.item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.DiscriminatorValue;

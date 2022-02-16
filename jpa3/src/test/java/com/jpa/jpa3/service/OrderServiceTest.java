@@ -45,7 +45,7 @@ class OrderServiceTest {
         assertEquals(OrderStatus.ORDER, order.getStatus());
         assertEquals(1, order.getOrderItems().size());
         assertEquals(10000 * 2, order.getTotalPrice());
-        assertEquals(8, item.getQuantity());
+        assertEquals(8, item.getStockQuantity());
     }
 
     @Test
@@ -77,7 +77,7 @@ class OrderServiceTest {
         Order getOrder = repository.findById(orderId);
 
         assertEquals(OrderStatus.CANCEL, getOrder.getStatus());
-        assertEquals(10, item.getQuantity());
+        assertEquals(10, item.getStockQuantity());
     }
 
     private Member createMember() {
@@ -90,7 +90,7 @@ class OrderServiceTest {
     }
 
     private Book createBook() {
-        Book book = Book.builder().author("kim").name("JPA").quantity(10).price(10000).build();
+        Book book = Book.builder().author("kim").name("JPA").stockQuantity(10).price(10000).build();
         em.persist(book);
         return book;
     }
