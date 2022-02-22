@@ -1,7 +1,7 @@
 package com.jpa.jpa3.service;
 
 import com.jpa.jpa3.domain.item.Item;
-import com.jpa.jpa3.repository.ItemRepository;
+import com.jpa.jpa3.domain.springDataRepository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +20,10 @@ public class ItemService {
     }
 
     public List<Item> findItems(){
-        return itemRepository.finaAll();
+        return itemRepository.findAll();
     }
 
     public Item findOne(Long id){
-        return itemRepository.findById(id);
+        return itemRepository.findById(id).orElse(null);
     }
 }

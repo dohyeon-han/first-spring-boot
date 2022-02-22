@@ -6,7 +6,7 @@ import com.jpa.jpa3.domain.Order;
 import com.jpa.jpa3.domain.OrderStatus;
 import com.jpa.jpa3.domain.item.Book;
 import com.jpa.jpa3.domain.item.Item;
-import com.jpa.jpa3.repository.OrderRepository;
+import com.jpa.jpa3.domain.springDataRepository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +40,7 @@ class OrderServiceTest {
 
         Long orderId = service.order(member.getId(), item.getId(), orderCount);
 
-        Order order = repository.findById(orderId);
+        Order order = repository.findById(orderId).orElse(null);
 
         assertEquals(OrderStatus.ORDER, order.getStatus());
         assertEquals(1, order.getOrderItems().size());
@@ -74,7 +74,7 @@ class OrderServiceTest {
         service.cancelOrder(orderId);
 
         //Then
-        Order getOrder = repository.findById(orderId);
+        Order getOrder = repository.findById(orderId).orElse(null);
 
         assertEquals(OrderStatus.CANCEL, getOrder.getStatus());
         assertEquals(10, item.getStockQuantity());

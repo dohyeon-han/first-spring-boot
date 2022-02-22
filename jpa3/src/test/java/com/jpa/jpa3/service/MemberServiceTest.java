@@ -1,7 +1,7 @@
 package com.jpa.jpa3.service;
 
 import com.jpa.jpa3.domain.Member;
-import com.jpa.jpa3.repository.MemberRepository;
+import com.jpa.jpa3.domain.springDataRepository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

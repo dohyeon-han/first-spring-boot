@@ -1,7 +1,7 @@
 package com.jpa.jpa3.service;
 
 import com.jpa.jpa3.domain.Member;
-import com.jpa.jpa3.repository.MemberRepository;
+import com.jpa.jpa3.domain.springDataRepository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +33,6 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Member findOne(Long id){
-        return memberRepository.findById(id);
+        return memberRepository.findById(id).orElse(null);
     }
 }
