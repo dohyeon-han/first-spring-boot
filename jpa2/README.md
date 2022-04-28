@@ -1,4 +1,4 @@
-# JPAL
+# JPQL
 
 ## JPQL
 
